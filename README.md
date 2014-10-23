@@ -1,4 +1,4 @@
-nmap-script-generator
+nse-generator
 =====================
 
-a simple way to generate basic nmap scripts
+A very simple way to generate very simple nmap scripts
