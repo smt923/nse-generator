@@ -7,6 +7,6 @@ Currently it will generate a script to scan for a chosen port, tcp or udp, and o
 
 TODO:
 
-add much more customiation options
-put the base script into another file
-general improvements
+- add much more customiation options
+- put the base script into another file
+- general improvements
