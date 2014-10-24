@@ -18,9 +18,9 @@ args = parser.parse_args()
 
 print(args.port)
 if args.protocol in ['tcp', 'TCP', 'Tcp', 'tCP']:
-    myproto = 'tcp'
+    myproto = '"tcp"'
 elif args.protocol in ['udp', 'UDP', 'Udp', 'UDP']:
-    myproto = 'udp'
+    myproto = '"udp"'
 else:
     sys.exit('I need a real protocol, tcp or udp!')
 
