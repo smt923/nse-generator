@@ -7,9 +7,13 @@ Currently it will generate a script to scan for a chosen port, tcp or udp, and o
 
 Current usage is simple: python nse-generator.py (port) (protocol) [-s (port state)]
 
-##Examples:
-python nse-generator.py 80 tcp  >  find servers with tcp port 80 open  
-python nse-generator.py 53 udp -s closed  >  find servers with udp port 53 closed  
+##Examples:  
+find servers with tcp port 80 open:
+
+    python nse-generator.py 80 tcp  
+find servers with udp port 53 closed:
+
+    python nse-generator.py 53 udp -s closed  
 
 ##Planned:
 
