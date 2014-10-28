@@ -1,8 +1,11 @@
 #!/usr/bin/python
 
 import argparse
+import subprocess
 import sys
+import stat
 import textwrap
+import os
 
 parser = argparse.ArgumentParser(
     description='Simple NSE Generator: ',
@@ -90,26 +93,26 @@ else:
         f.write(runfilelinux)
 # just makes reading the final confirmation easier to read
 if args.hosts == 0:
-    args.hosts = "Unlimited"
+    args.hosts = 'Unlimited'
 
 print("Generating {5}, it scans {4} hosts on port {0}/{1}'s that are {2} at speed T{3}!".format(
     args.port, args.protocol, args.state, args.timing, args.hosts, filename))
 
 # ask the user if we want to jump straight into a scan
-runnmap = input("Start the scan now? (y/N) ")
+runnmap = input('Start the scan now? (y/N) ')
 yes = ['yes', 'y', 'ye']
 no = ['no', 'n', '']
 
-from subprocess import call
 if runnmap.lower() in yes and args.windows:
     try:
-        print("Starting, press Ctrl-C to exit")
-        call(filewin, shell=True)
+        print('Starting, press Ctrl-C to exit')
+        subprocess.call(filewin + ' < Nul')
     except KeyboardInterrupt:
-        exit("Ctrl-C received, closing")
+        exit('Ctrl-C received, closing')
 elif runnmap.lower() in yes and not args.windows:
     try:
-        print("Starting, press Ctrl-C to exit")
-        call(filelinux, shell=True)
+        print('Starting, press Ctrl-C to exit')
+        os.chmod(os.getcwd()+'/'+filelinux, stat.S_IRWXO)
+        subprocess.call(os.getcwd() + '/' + filelinux)
     except KeyboardInterrupt:
-        exit("Ctrl-C received, closing")
+        exit('Ctrl-C received, closing')
