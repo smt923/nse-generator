@@ -30,9 +30,3 @@ find servers with 443 open, scan slowly, call the script "ssl.nse" and generate 
 ```
 python nse-generator.py 443 tcp open -T2 -o ssl -w
 ```
-
-##Planned:
-
-- add much more customization options
-- put the base scripts into their own files
-- general improvements
