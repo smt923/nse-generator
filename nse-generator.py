@@ -17,6 +17,9 @@ parser.add_argument('protocol',
 parser.add_argument('-s', '--state',
                     help='port state, default is open (open, closed or filtered)', type=str,
                     action='store', default='open')
+parser.add_argument('-o', '--output',
+                    help='set the name for the generated NSE file, don\'t include .nse, default is myscan', type=str,
+                    action='store', default='myscan')
 parser.add_argument('-t', '--timing',
                     help='timing or scan speed, same as nmap, default is 4', type=int,
                     action='store', default='4')
@@ -36,6 +39,9 @@ elif args.protocol in ['udp', 'UDP', 'Udp', 'UDP']:
 else:
     sys.exit('I need a real protocol, tcp or udp!')
 
+filename = args.output+'.nse'
+filewin = 'run-'+filename+'.bat'
+filelinux = 'run-'+filename+'.sh'
 myportstate = '"'+str(args.state)+'"'
 
 # all our outputs
@@ -63,31 +69,31 @@ end
 
 runfilelinux = textwrap.dedent("""\
 #!/bin/bash
-nmap -n -Pn -p T:{0} -T{3} -v --script myscan.nse -iR {4} --max-hostgroup 512
-""").format(args.port,myproto,myportstate,args.timing,args.hosts)
+nmap -n -Pn -p T:{0} -T{3} -v --script {5} -iR {4} --max-hostgroup 512
+""").format(args.port, myproto, myportstate, args.timing, args.hosts, filename)
 
 runfilewin = textwrap.dedent("""\
 @echo off
-nmap -n -Pn -p T:{0} -T{3} -v --script myscan.nse -iR {4} --max-hostgroup 512
+nmap -n -Pn -p T:{0} -T{3} -v --script {5} -iR {4} --max-hostgroup 512
 exit
-""").format(args.port,myproto,myportstate,args.timing,args.hosts)
+""").format(args.port, myproto, myportstate, args.timing, args.hosts, filename)
 
-with open('myscan.nse', 'w') as f:
+with open(filename, 'w') as f:
     f.write(output)
 
 # by default make a .sh file for easily running the script, -w for windows .bat
 if args.windows:
-    with open('run-myscan.bat', 'w') as f:
+    with open(filewin, 'w') as f:
         f.write(runfilewin)
 else:
-    with open('run-myscan.sh', 'w') as f:
+    with open(filelinux, 'w') as f:
         f.write(runfilelinux)
 # just makes reading the final confirmation easier to read
 if args.hosts == 0:
     args.hosts = "Unlimited"
 
-print("Generating script to scan: {4} hosts on port {0}/{1}'s that are {2} at speed T{3}!".format(
-    args.port, args.protocol, args.state, args.timing, args.hosts))
+print("Generating {5}, it scans {4} hosts on port {0}/{1}'s that are {2} at speed T{3}!".format(
+    args.port, args.protocol, args.state, args.timing, args.hosts, filename))
 
 # ask the user if we want to jump straight into a scan
 runnmap = input("Start the scan now? (y/N) ")
@@ -95,15 +101,15 @@ yes = ['yes', 'y', 'ye']
 no = ['no', 'n', '']
 
 from subprocess import call
-if runnmap in yes and args.windows:
+if runnmap.lower() in yes and args.windows:
     try:
         print("Starting, press Ctrl-C to exit")
-        call("run-myscan.bat", shell=True)
+        call(filewin, shell=True)
     except KeyboardInterrupt:
         exit("Ctrl-C received, closing")
-elif runnmap in yes and not args.windows:
+elif runnmap.lower() in yes and not args.windows:
     try:
         print("Starting, press Ctrl-C to exit")
-        call("run-myscan.sh", shell=True)
+        call(filelinux, shell=True)
     except KeyboardInterrupt:
         exit("Ctrl-C received, closing")
