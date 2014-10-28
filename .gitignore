@@ -1,3 +1,4 @@
 # ignore our generated files
 *.nse
 *.bat
+*.sh
