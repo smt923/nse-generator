@@ -22,10 +22,10 @@ parser.add_argument('-s', '--state',
                     action='store', default='open')
 parser.add_argument('-o', '--output',
                     help='set the name for the generated NSE file, don\'t include .nse, default is myscan', type=str,
-                    action='store', default='myscan')
-parser.add_argument('-t', '--timing',
+                    action='store', default='myscan', metavar='Script filename')
+parser.add_argument('-t', '-T', '--timing',
                     help='timing or scan speed, same as nmap, default is 4', type=int,
-                    action='store', default='4')
+                    action='store', default='4', metavar='0 - 5')
 parser.add_argument('-H', '--hosts',
                     help='amount of random hosts to scan through, default is unlimited', type=int,
                     action='store', default='0')
