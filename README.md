@@ -28,5 +28,5 @@ python nse-generator.py 53 udp -s closed
 find servers with 443 open, scan slowly, call the script "ssl.nse" and generate a windows .bat file to run our script 
 
 ```
-python nse-generator.py 443 tcp open -T2 -o ssl -w
+python nse-generator.py 443 tcp -s open -T2 -o ssl -w
 ```
